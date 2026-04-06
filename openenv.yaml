@@ -1,0 +1,51 @@
+name: email_triage_openenv
+version: 1.0.0
+description: Deterministic real-world email triage environment for agentic RL.
+author: Balaji U and Team
+license: MIT
+tags:
+  - openenv
+  - rl
+  - customer-support
+  - email-triage
+
+runtime:
+  host: 0.0.0.0
+  port: 7860
+  framework: fastapi
+  entrypoint: env.app:app
+
+environment:
+  class_path: env.email_env:EmailTriageEnvironment
+  api:
+    reset: /reset
+    step: /step
+    state: /state
+
+models:
+  action_model: env.models:EmailTriageAction
+  observation_model: env.models:EmailTriageObservation
+  reward_model: env.models:EmailTriageReward
+  state_model: env.models:EmailTriageState
+
+tasks:
+  - id: email_easy
+    difficulty: easy
+    description: Single email triage and completion.
+  - id: email_medium
+    difficulty: medium
+    description: Multi-intent dual inbox routing and response.
+  - id: email_hard
+    difficulty: hard
+    description: SLA-sensitive triage with outage-first ordering.
+
+grading:
+  score_range: [0.0, 1.0]
+  deterministic: true
+  grader_module: env.graders
+
+validation:
+  max_runtime_minutes: 20
+  resource_profile:
+    vcpu: 2
+    memory_gb: 8

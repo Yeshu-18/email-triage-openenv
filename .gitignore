@@ -1,0 +1,6 @@
+.venv/
+.venv-mac/
+__pycache__/
+.pytest_cache/
+.env
+*.zip

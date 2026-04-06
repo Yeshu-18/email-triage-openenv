@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "email-triage-openenv"
+version = "1.0.0"
+description = "OpenEnv environment for deterministic email triage RL tasks"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Balaji U Team" }
+]
+dependencies = [
+  "fastapi==0.115.9",
+  "uvicorn[standard]==0.38.0",
+  "pydantic==2.11.9",
+  "openai==2.7.2",
+  "python-dotenv==1.1.1",
+  "openenv-core==0.2.3"
+]
+
+[project.scripts]
+server = "server.app:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["env*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
