@@ -30,9 +30,10 @@ def tasks() -> dict[str, object]:
 
 
 @app.post("/reset")
-def reset(payload: ResetRequest) -> dict[str, object]:
+def reset(payload: ResetRequest | None = None) -> dict[str, object]:
     try:
-        result = env.reset(task_id=payload.task_id)
+        task_id = payload.task_id if payload else None
+        result = env.reset(task_id=task_id)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return result.model_dump()
