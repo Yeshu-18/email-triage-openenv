@@ -3,6 +3,9 @@ from __future__ import annotations
 from .tasks import TaskSpec
 
 
+EPS = 0.01
+
+
 def _keyword_score(reply: str, required_keywords: list[str]) -> float:
     if not required_keywords:
         return 1.0
@@ -45,7 +48,8 @@ def grade_task(
             ordering_score = 0.0
 
     overall = 0.5 * structure_score + 0.3 * reply_score + 0.2 * ordering_score
-    overall = max(0.0, min(1.0, overall))
+    # Phase-2 validator requires strict bounds: 0 < score < 1.
+    overall = max(EPS, min(1.0 - EPS, overall))
 
     return overall, {
         "structure": round(structure_score, 4),
